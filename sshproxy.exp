@@ -1,13 +1,13 @@
 #!/usr/bin/expect
 
-set USER [ lindex $argv 0 ]
-set PASS [ lindex $argv 1 ]
-set OTP [ lindex $argv 2 ]
+set USER [lindex $argv 0]
+set PASS [lindex $argv 1]
+set OTP [lindex $argv 2]
 
 set timeout -1
 
 spawn sshproxy.sh -u $USER
-expect "Enter the password+OTP for afan:"
+expect "Enter the password+OTP for $USER:"
 send -- "$PASS$OTP\r"
 
-expect_background
+expect eof

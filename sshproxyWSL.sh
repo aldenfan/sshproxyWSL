@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Generate ssh keys in both openssh and ppk formats and copy to windows side
 # 2023-01-09 Switched to pulling credentials from 1password. Requires using expect script.
@@ -8,20 +8,20 @@ win_dir="/mnt/c/Users/alden"
 wsl_dir="/home/afan/.ssh"
 
 # get password and OTP from 1password
-pass="op://Personal/NERSC/password"
+passref="op://Personal/NERSC/password"
 otp=$(op item get nersc --otp)
 
 echo "Generate NERSC ssh key in OpenSSH format"
 #cmd="sshproxy.sh -u ${username}" # OLD
 echo "  User: ${username}"
-echo "  Password: pulling from 1password: ${pass}"
+echo "  Password: pulling from 1password: ${passref}"
 echo "  OTP: pulling from 1password: ${otp}"
 
-cmd="/usr/local/bin/sshproxy.exp ${username} ${pass} ${otp}"
+# resolve password here
+cmd="/usr/local/bin/sshproxy.exp ${username} $(op read $passref) ${otp}"
 #echo "cmd: ${cmd}"
 echo "===========SSHPROXY==========="
 $cmd
-echo ""
 echo "===========SSHPROXY==========="
 echo 
 echo "Copying NERSC ssh key to Windows"
